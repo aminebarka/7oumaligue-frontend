@@ -83,10 +83,10 @@ const Header: React.FC = () => {
 
           {/* Right side */}
           <div className={`flex items-center space-x-4 ${isRTL ? "space-x-reverse" : ""}`}>
-            {/* Theme Toggle */}
+            {/* Theme Toggle - Toujours visible */}
             <ThemeToggle />
 
-            {/* Language Toggle */}
+            {/* Language Toggle - Toujours visible */}
             <button
               onClick={toggleLanguage}
               className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 backdrop-blur-sm transition-colors"
@@ -95,9 +95,7 @@ const Header: React.FC = () => {
               <span>{language.toUpperCase()}</span>
             </button>
 
-
-
-            {/* Profile Menu */}
+            {/* Profile Menu - Seulement si utilisateur connecté */}
             {user && (
               <div className="relative">
                 <button
@@ -138,7 +136,7 @@ const Header: React.FC = () => {
               </div>
             )}
 
-            {/* Mobile menu button */}
+            {/* Mobile menu button - Seulement si utilisateur connecté */}
             {user && (
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -150,33 +148,31 @@ const Header: React.FC = () => {
           </div>
         </div>
 
-                    {/* Mobile Navigation */}
-            {user && isMobileMenuOpen && (
-              <div className="md:hidden border-t border-white/20 py-4 bg-black/20 backdrop-blur-md rounded-lg mt-2">
-                <nav className="space-y-2">
-                  {navigation.map((item) => {
-                    const Icon = item.icon
-                    return (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          location.pathname === item.href
-                            ? "text-white bg-white/20"
-                            : "text-white/90 hover:text-white hover:bg-white/10"
-                        }`}
-                      >
-                        <Icon size={20} />
-                        <span>{item.name}</span>
-                      </Link>
-                    )
-                  })}
-                  
-
-                </nav>
-              </div>
-            )}
+        {/* Mobile Navigation - Seulement si utilisateur connecté */}
+        {user && isMobileMenuOpen && (
+          <div className="md:hidden border-t border-white/20 py-4 bg-black/20 backdrop-blur-md rounded-lg mt-2">
+            <nav className="space-y-2">
+              {navigation.map((item) => {
+                const Icon = item.icon
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      location.pathname === item.href
+                        ? "text-white bg-white/20"
+                        : "text-white/90 hover:text-white hover:bg-white/10"
+                    }`}
+                  >
+                    <Icon size={20} />
+                    <span>{item.name}</span>
+                  </Link>
+                )
+              })}
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   )
