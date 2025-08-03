@@ -4,8 +4,13 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "prebuild": "rimraf dist && rimraf node_modules/.vite",
+    "clean": "rimraf dist && rimraf node_modules/.vite",
+    "clean:all": "rimraf dist && rimraf node_modules/.vite && rimraf node_modules && npm install",
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:clean": "npm run clean && npm run build",
+    "build:azure": "npm run clean && tsc && vite build --mode production",
     "build:analyze": "tsc && vite build --mode analyze",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",

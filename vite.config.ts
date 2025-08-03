@@ -33,7 +33,7 @@ export default defineConfig({
   build: {
     outDir: "dist",
     minify: 'esbuild',
-    cssCodeSplit: true,
+    cssCodeSplit: false, // Désactiver pour réduire le nombre de fichiers
     sourcemap: false,
     rollupOptions: {
       output: {
@@ -47,11 +47,14 @@ export default defineConfig({
           // Utility libraries
           'utils-vendor': ['axios', 'clsx', 'tailwind-merge'],
           
-          // Pages chunks - Group related pages together
-          'pages-admin': [
-            './src/pages/Admin.tsx',
-            './src/pages/PlayerManagement.tsx',
-            './src/pages/Stadiums.tsx'
+          // Pages - Groupé en chunks plus gros pour réduire le nombre de fichiers
+          'pages-main': [
+            './src/pages/Home.tsx',
+            './src/pages/Dashboard.tsx',
+            './src/pages/Login.tsx',
+            './src/pages/Profile.tsx',
+            './src/pages/Heroes.tsx',
+            './src/pages/Stats.tsx'
           ],
           'pages-tournaments': [
             './src/pages/Tournaments.tsx',
@@ -63,7 +66,8 @@ export default defineConfig({
           'pages-teams': [
             './src/pages/Teams.tsx',
             './src/pages/Players.tsx',
-            './src/pages/PlayerCards.tsx'
+            './src/pages/PlayerCards.tsx',
+            './src/pages/PlayerManagement.tsx'
           ],
           'pages-features': [
             './src/pages/Store.tsx',
@@ -71,20 +75,13 @@ export default defineConfig({
             './src/pages/Sponsors.tsx',
             './src/pages/SocialWall.tsx',
             './src/pages/PaymentCenter.tsx',
-            './src/pages/TVDisplay.tsx'
-          ],
-          'pages-core': [
-            './src/pages/Dashboard.tsx',
-            './src/pages/Stats.tsx',
-            './src/pages/Profile.tsx',
-            './src/pages/Heroes.tsx'
+            './src/pages/TVDisplay.tsx',
+            './src/pages/Stadiums.tsx',
+            './src/pages/Admin.tsx'
           ]
         },
-        // Optimize chunk naming
-        chunkFileNames: (chunkInfo) => {
-          const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
-          return `js/[name]-[hash].js`;
-        },
+        // Optimize chunk naming - Réduire la complexité des noms
+        chunkFileNames: 'js/[name]-[hash].js',
         entryFileNames: 'js/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]'
       },
