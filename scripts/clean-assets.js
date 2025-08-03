@@ -40,6 +40,27 @@ function cleanAssets() {
     })
   })
 
+  // Supprimer les images inutiles pour Azure
+  const imagesToKeep = [
+    'favicon.svg',
+    'logo.png'
+  ]
+  
+  const files = fs.readdirSync(distPath)
+  files.forEach(file => {
+    const filePath = path.join(distPath, file)
+    const stat = fs.statSync(filePath)
+    if (stat.isFile()) {
+      const ext = path.extname(file).toLowerCase()
+      if (['.png', '.jpg', '.jpeg', '.gif', '.webp'].includes(ext)) {
+        if (!imagesToKeep.includes(file)) {
+          fs.unlinkSync(filePath)
+          console.log(`🗑️ Image supprimée: ${file}`)
+        }
+      }
+    }
+  })
+
   // Supprimer les dossiers vides
   const cleanEmptyDirs = (dir) => {
     const items = fs.readdirSync(dir)
@@ -104,7 +125,7 @@ function cleanAssets() {
   const totalFiles = countFiles(distPath)
   console.log(`📊 Total fichiers: ${totalFiles}`)
   
-  if (totalFiles <= 15) {
+  if (totalFiles <= 5) {
     console.log('✅ SUCCÈS ! Nombre de fichiers acceptable pour Azure.')
   } else {
     console.log('⚠️ ATTENTION: Encore trop de fichiers pour Azure.')
