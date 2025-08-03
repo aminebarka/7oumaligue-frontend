@@ -30,7 +30,7 @@ jobs:
           skip_app_build: false
           skip_api_build: true
           deployment_environment: production
-          app_build_command: "npm run build:azure"
+          app_build_command: "npm run build:minimal"
           api_build_command: ""
           app_artifact_location: "dist"
           deployment_environment: production 

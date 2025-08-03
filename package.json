@@ -11,6 +11,7 @@
     "build": "tsc && vite build",
     "build:clean": "npm run clean && npm run build",
     "build:azure": "npm run clean && tsc && vite build --config vite.config.azure.ts && node scripts/clean-assets.js",
+    "build:minimal": "npm run clean && tsc && vite build --config vite.config.minimal.ts && node scripts/clean-assets.js",
     "build:analyze": "tsc && vite build --mode analyze",
     "clean:assets": "node scripts/clean-assets.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
