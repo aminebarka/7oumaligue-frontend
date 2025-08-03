@@ -62,11 +62,11 @@ const LiveMatch: React.FC<LiveMatchProps> = ({ matchId }) => {
 
   // Timer automatique quand le match est en cours
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: number;
     if (liveState?.isLive && !liveState?.isPaused) {
       interval = setInterval(() => {
         liveMatchService.updateMatchTime(matchId, (liveState?.matchTime || 0) + 1);
-      }, 1000);
+      }, 1000) as unknown as number;
     }
     return () => clearInterval(interval);
   }, [liveState?.isLive, liveState?.isPaused, matchId]);
@@ -121,7 +121,7 @@ const LiveMatch: React.FC<LiveMatchProps> = ({ matchId }) => {
     console.log('Événement ajouté:', event);
   };
 
-  const getEventIcon = (type: string) => {
+  const getEventIcon = (type: string): string => {
     switch (type) {
       case 'goal': return '🥅';
       case 'yellow_card': return '🟨';
@@ -131,7 +131,7 @@ const LiveMatch: React.FC<LiveMatchProps> = ({ matchId }) => {
     }
   };
 
-  const getEventColor = (type: string) => {
+  const getEventColor = (type: string): string => {
     switch (type) {
       case 'goal': return 'bg-green-500';
       case 'yellow_card': return 'bg-yellow-500';

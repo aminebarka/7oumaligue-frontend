@@ -1,5 +1,79 @@
 import axios from 'axios'
-import { TournamentSuggestion, TournamentConstraints } from '../../../backend/src/utils/tournamentAI'
+import { 
+  TournamentSuggestion, 
+  TournamentConstraints, 
+  PersonalizedRecommendationRequest,
+  TournamentCreationRequest,
+  TournamentCreationResponse 
+} from '../types/ai'
+
+// API pour les suggestions de tournois
+export const generateTournamentSuggestions = async (constraints: TournamentConstraints): Promise<TournamentSuggestion[]> => {
+  try {
+    const response = await axios.post('/api/tournaments/ai/suggestions', constraints)
+    return response.data.data
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error generating tournament suggestions:', error.message)
+    }
+    throw error
+  }
+}
+
+// API pour créer un tournoi basé sur une suggestion
+export const createTournamentFromSuggestion = async (suggestion: TournamentSuggestion): Promise<TournamentCreationResponse> => {
+  try {
+    const response = await axios.post('/api/tournaments/ai/create', suggestion)
+    return response.data.data
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error creating tournament:', error.message)
+    }
+    throw error
+  }
+}
+
+// API pour obtenir une recommandation personnalisée
+export const getPersonalizedRecommendation = async (
+  teams: number,
+  venue: string,
+  timeSlot: string,
+  budget: number
+): Promise<TournamentSuggestion> => {
+  try {
+    const request: PersonalizedRecommendationRequest = {
+      teams,
+      venue,
+      timeSlot,
+      budget
+    }
+    const response = await axios.post('/api/tournaments/ai/personalized', request)
+    return response.data.data
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error getting personalized recommendation:', error.message)
+    }
+    throw error
+  }
+}
+
+// Service pour les suggestions de tournoi AI
+export const tournamentAIService = {
+  // Obtenir des suggestions de format de tournoi
+  getSuggestions: async (constraints: TournamentConstraints): Promise<TournamentSuggestion[]> => {
+    return generateTournamentSuggestions(constraints)
+  },
+
+  // Générer une recommandation personnalisée
+  getPersonalizedRecommendation: async (
+    teams: number,
+    venue: string,
+    timeSlot: string,
+    budget: number
+  ): Promise<TournamentSuggestion> => {
+    return getPersonalizedRecommendation(teams, venue, timeSlot, budget)
+  }
+}
 
 // Utiliser une URL plus robuste qui fonctionne en développement et production
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
@@ -88,41 +162,6 @@ export interface Stadium {
   partnerLevel?: string
   createdAt: string
   updatedAt: string
-}
-
-// Service pour les suggestions de tournoi AI
-export const tournamentAIService = {
-  // Obtenir des suggestions de format de tournoi
-  getSuggestions: async (constraints: TournamentConstraints): Promise<TournamentSuggestion[]> => {
-    try {
-      const response = await axios.post(`${API_URL}/tournaments/ai/suggestions`, constraints)
-      return response.data.data
-    } catch (error) {
-      console.error('Erreur lors de la récupération des suggestions:', error)
-      return []
-    }
-  },
-
-  // Générer une recommandation personnalisée
-  getPersonalizedRecommendation: async (
-    teams: number,
-    venue: string,
-    timeSlot: string,
-    budget: number
-  ): Promise<TournamentSuggestion> => {
-    try {
-      const response = await axios.post(`${API_URL}/tournaments/ai/personalized`, {
-        teams,
-        venue,
-        timeSlot,
-        budget
-      })
-      return response.data.data
-    } catch (error) {
-      console.error('Erreur lors de la génération de recommandation:', error)
-      throw error
-    }
-  }
 }
 
 // Service pour le mur social
