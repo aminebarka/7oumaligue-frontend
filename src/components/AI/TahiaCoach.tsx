@@ -26,7 +26,7 @@ export const TahiaCoach: React.FC<TahiaCoachProps> = ({
     {
       id: '1',
       type: 'assistant',
-      content: 'مرحبا! أنا طاهية كوتش، مساعدتك الذكي لتنظيم البطولات! كيف يمكنني مساعدتك اليوم؟',
+      content: 'مرحبا! أنا طاهية كوتش، مساعدتك الذكي لتنظيم البطولات! كيف يمكنني مساعدتك  اليوم؟',
       timestamp: new Date()
     }
   ])
