@@ -36,9 +36,7 @@ export default defineConfig({
     // Forcer un seul fichier
     lib: undefined,
     // Désactiver le code splitting
-    target: 'es2015',
-    // Inline le CSS
-    cssCodeSplit: false
+    target: 'es2015'
   },
   optimizeDeps: {
     include: [
