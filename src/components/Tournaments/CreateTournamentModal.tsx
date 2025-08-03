@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Sparkles, Users, Calendar, Trophy } from 'lucide-react';
-import { tournamentAIService, stadiumService, Stadium } from '../../services/advancedApi';
+import { X, Trophy, Sparkles, Users, Calendar, MapPin, Brain } from 'lucide-react';
+import { tournamentAIService } from '../../services/advancedApi';
+import { stadiumService, Stadium } from '../../services/stadiumApi';
+import { TournamentSuggestion, TournamentConstraints } from '../../types/ai';
 
-interface TournamentSuggestion {
+// Types locaux pour ce composant
+interface LocalTournamentSuggestion {
   description: string;
   format: string;
   numberOfGroups: number;
@@ -35,19 +38,17 @@ const CreateTournamentModal: React.FC<CreateTournamentModalProps> = ({
   isRTL
 }) => {
   const [activeTab, setActiveTab] = useState<'basic' | 'ai'>('basic');
-  const [aiSuggestions, setAiSuggestions] = useState<TournamentSuggestion[]>([]);
-  const [aiLoading, setAiLoading] = useState(false);
-  const [selectedSuggestion, setSelectedSuggestion] = useState<TournamentSuggestion | null>(null);
   const [teamsCount, setTeamsCount] = useState(8);
+  const [aiSuggestions, setAiSuggestions] = useState<LocalTournamentSuggestion[]>([]);
+  const [selectedSuggestion, setSelectedSuggestion] = useState<LocalTournamentSuggestion | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
   const [stadiums, setStadiums] = useState<Stadium[]>([]);
   const [stadiumsLoading, setStadiumsLoading] = useState(false);
 
   // Charger les stades au montage du composant
   useEffect(() => {
-    if (show) {
-      loadStadiums();
-    }
-  }, [show]);
+    loadStadiums();
+  }, []);
 
   const loadStadiums = async () => {
     setStadiumsLoading(true);
@@ -115,14 +116,28 @@ const CreateTournamentModal: React.FC<CreateTournamentModalProps> = ({
 
     setAiLoading(true);
     try {
-      const suggestions = await tournamentAIService.getSuggestions({
-        numberOfTeams: teamsCount,
-        maxDuration: "7d", // 7 jours
-        availableFields: 2,
-        maxMatchesPerDay: 8,
-        includeThirdPlace: true
-      });
-      setAiSuggestions(suggestions);
+      const constraints: TournamentConstraints = {
+        maxTeams: teamsCount,
+        maxDuration: "2 weeks",
+        preferredFormat: "league",
+        specialRequirements: []
+      };
+      
+      const suggestions = await tournamentAIService.getSuggestions(constraints);
+      
+      // Convertir les suggestions API en format local
+      const localSuggestions: LocalTournamentSuggestion[] = suggestions.map(suggestion => ({
+        description: suggestion.description,
+        format: suggestion.complexity === 'easy' ? 'League' : suggestion.complexity === 'medium' ? 'Cup' : 'Mixed',
+        numberOfGroups: Math.ceil(suggestion.teamsCount / 4),
+        teamsPerGroup: 4,
+        totalMatches: suggestion.teamsCount * 2,
+        estimatedDuration: suggestion.duration,
+        advantages: suggestion.features,
+        isRecommended: suggestion.complexity === 'easy'
+      }));
+      
+      setAiSuggestions(localSuggestions);
     } catch (error) {
       console.error('Erreur lors de la récupération des suggestions:', error);
       alert('Erreur lors de la récupération des suggestions AI');
@@ -132,7 +147,7 @@ const CreateTournamentModal: React.FC<CreateTournamentModalProps> = ({
   };
 
   // Appliquer une suggestion AI
-  const applySuggestion = (suggestion: TournamentSuggestion) => {
+  const applySuggestion = (suggestion: LocalTournamentSuggestion) => {
     setNewTournament({
       ...newTournament,
       numberOfGroups: String(suggestion.numberOfGroups),
