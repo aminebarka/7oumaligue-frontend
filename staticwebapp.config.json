@@ -1,109 +1,13 @@
 {
   "routes": [
     {
-      "route": "/api/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/admin/*",
-      "allowedRoles": ["authenticated"]
-    },
-    {
-      "route": "/player-management/*",
-      "allowedRoles": ["authenticated"]
-    },
-    {
-      "route": "/dashboard/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/teams/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/players/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/tournaments/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/groups/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/matches/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/live-match/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/stats/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/profile/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/heroes/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/stadiums/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/tv-display/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/social/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/payments/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/player-cards/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/tournament-ai/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/store/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/free-players/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/sponsors/*",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/login",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
-      "route": "/",
-      "allowedRoles": ["authenticated", "anonymous"]
-    },
-    {
       "route": "/*",
-      "serve": "/index.html"
+      "allowedRoles": ["anonymous", "authenticated"]
     }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/images/*", "/css/*", "/js/*", "/api/*", "/*.{png,jpg,gif,svg,css,js,ico,json}"]
+    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/assets/*"]
   },
   "responseOverrides": {
     "404": {
@@ -112,25 +16,32 @@
     }
   },
   "globalHeaders": {
-    "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';",
+    "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;",
     "x-frame-options": "DENY",
     "x-content-type-options": "nosniff",
-    "referrer-policy": "strict-origin-when-cross-origin"
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "permissions-policy": "camera=(), microphone=(), geolocation=()"
   },
   "mimeTypes": {
     ".json": "application/json",
     ".js": "application/javascript",
     ".css": "text/css",
     ".html": "text/html",
-    ".svg": "image/svg+xml",
+    ".ico": "image/x-icon",
     ".png": "image/png",
     ".jpg": "image/jpeg",
     ".jpeg": "image/jpeg",
     ".gif": "image/gif",
-    ".ico": "image/x-icon",
+    ".svg": "image/svg+xml",
     ".woff": "font/woff",
     ".woff2": "font/woff2",
     ".ttf": "font/ttf",
     ".eot": "application/vnd.ms-fontobject"
-  }
+  },
+  "platformErrorOverrides": [
+    {
+      "errorType": "NotFound",
+      "serve": "/index.html"
+    }
+  ]
 } 

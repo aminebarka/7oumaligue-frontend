@@ -33,43 +33,39 @@ export default defineConfig({
   build: {
     outDir: "dist",
     minify: 'esbuild',
-    cssCodeSplit: false, // Désactiver pour réduire le nombre de fichiers
+    cssCodeSplit: false,
     sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: {
-          // Core React libraries
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          
-          // UI Libraries
-          'ui-vendor': ['framer-motion', 'lucide-react'],
-          
-          // Utility libraries
-          'utils-vendor': ['axios', 'clsx', 'tailwind-merge'],
-          
-          // Pages - Groupé en chunks plus gros pour réduire le nombre de fichiers
-          'pages-main': [
+          // Un seul chunk vendor pour toutes les librairies
+          'vendor': [
+            'react', 
+            'react-dom', 
+            'react-router-dom',
+            'framer-motion',
+            'lucide-react',
+            'axios',
+            'clsx',
+            'tailwind-merge'
+          ],
+          // Un seul chunk pour toutes les pages
+          'app': [
             './src/pages/Home.tsx',
             './src/pages/Dashboard.tsx',
             './src/pages/Login.tsx',
             './src/pages/Profile.tsx',
             './src/pages/Heroes.tsx',
-            './src/pages/Stats.tsx'
-          ],
-          'pages-tournaments': [
+            './src/pages/Stats.tsx',
             './src/pages/Tournaments.tsx',
             './src/pages/Groups.tsx',
             './src/pages/Matches.tsx',
             './src/pages/LiveMatch.tsx',
-            './src/pages/TournamentAI.tsx'
-          ],
-          'pages-teams': [
+            './src/pages/TournamentAI.tsx',
             './src/pages/Teams.tsx',
             './src/pages/Players.tsx',
             './src/pages/PlayerCards.tsx',
-            './src/pages/PlayerManagement.tsx'
-          ],
-          'pages-features': [
+            './src/pages/PlayerManagement.tsx',
             './src/pages/Store.tsx',
             './src/pages/FreePlayers.tsx',
             './src/pages/Sponsors.tsx',
@@ -80,14 +76,13 @@ export default defineConfig({
             './src/pages/Admin.tsx'
           ]
         },
-        // Optimize chunk naming - Réduire la complexité des noms
-        chunkFileNames: 'js/[name]-[hash].js',
-        entryFileNames: 'js/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        // Noms de fichiers très simples
+        chunkFileNames: 'js/[name].js',
+        entryFileNames: 'js/[name].js',
+        assetFileNames: 'assets/[name].[ext]'
       },
     },
-    // Optimize chunk size warnings
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 2000,
   },
   optimizeDeps: {
     include: [
