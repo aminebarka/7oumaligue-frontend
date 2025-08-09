@@ -16,7 +16,7 @@
     }
   },
   "globalHeaders": {
-    "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;",
+    "content-security-policy": "default-src 'self'; connect-src 'self' https://backend-7oumaligue-hrd4bqesgcefg5h4.francecentral-01.azurewebsites.net; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;",
     "x-frame-options": "DENY",
     "x-content-type-options": "nosniff",
     "referrer-policy": "strict-origin-when-cross-origin",
@@ -44,4 +44,4 @@
       "serve": "/index.html"
     }
   ]
-} 
+}
