@@ -76,7 +76,8 @@ export const tournamentAIService = {
 }
 
 // Utiliser une URL plus robuste qui fonctionne en développement et production
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+const API_URL = "https://backend-7oumaligue-hrd4bqesgcefg5h4.francecentral-01.azurewebsites.net/api"
+
 
 // Types pour les nouvelles fonctionnalités
 export interface SocialPost {
