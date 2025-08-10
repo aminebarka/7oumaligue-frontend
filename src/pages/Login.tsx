@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, UserCheck } from 'lucide-react';
+import { Mail, Lock, User } from 'lucide-react';
 import LogoWithText from '../components/LogoWithText';
 
 const Login: React.FC = () => {
@@ -10,7 +10,6 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [role, setRole] = useState<'player' | 'coach' | 'admin'>('player');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login, register, isLoading } = useAuth();
@@ -27,7 +26,8 @@ const Login: React.FC = () => {
         await login(email, password);
         navigate('/dashboard');
       } else {
-        await register(name, email, password, role);
+        // Toujours utiliser "player" comme rôle par défaut pour les nouveaux utilisateurs
+        await register(name, email, password, 'player');
         navigate('/dashboard');
       }
     } catch (err: any) {
@@ -115,27 +115,6 @@ const Login: React.FC = () => {
                 />
               </div>
             </div>
-
-            {!isLogin && (
-              <div>
-                <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
-                  Rôle
-                </label>
-                <div className="relative">
-                  <UserCheck className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <select
-                    id="role"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value as 'player' | 'coach' | 'admin')}
-                    className="pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  >
-                    <option value="player">Joueur</option>
-                    <option value="coach">Coach</option>
-                    <option value="admin">Administrateur</option>
-                  </select>
-                </div>
-              </div>
-            )}
           </div>
 
           <button
