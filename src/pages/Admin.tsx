@@ -4,6 +4,7 @@ import { useData } from '../contexts/DataContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Navigate } from 'react-router-dom';
 import { Shield, Users, Trophy, Calendar, Settings, AlertTriangle, CheckCircle, Edit, Trash2, Download } from 'lucide-react';
+import UserManagement from '../components/UserManagement';
 
 const Admin: React.FC = () => {
   const { user } = useAuth();
@@ -165,34 +166,7 @@ const Admin: React.FC = () => {
       )}
 
       {selectedTab === 'users' && (
-        <div className="bg-white rounded-2xl shadow-lg">
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
-            <h2 className="text-xl font-bold text-white">Gestion des Utilisateurs</h2>
-          </div>
-          <div className="p-6">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex space-x-4">
-                <select className="px-4 py-2 border border-gray-300 rounded-lg">
-                  <option>Tous les rôles</option>
-                  <option>Administrateurs</option>
-                  <option>Coachs</option>
-                  <option>Joueurs</option>
-                </select>
-                <input
-                  type="text"
-                  placeholder="Rechercher un utilisateur..."
-                  className="px-4 py-2 border border-gray-300 rounded-lg"
-                />
-              </div>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                Inviter Utilisateur
-              </button>
-            </div>
-            <div className="text-center py-8 text-gray-500">
-              Interface de gestion des utilisateurs en développement...
-            </div>
-          </div>
-        </div>
+        <UserManagement />
       )}
 
       {selectedTab === 'teams' && (

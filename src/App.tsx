@@ -27,6 +27,8 @@ const Heroes = lazy(() => import("./pages/Heroes"))
 const Groups = lazy(() => import("./pages/Groups"))
 const PlayerManagement = lazy(() => import("./pages/PlayerManagement"))
 const Stadiums = lazy(() => import("./pages/Stadiums"))
+const Reservations = lazy(() => import("./pages/Reservations"))
+const Academies = lazy(() => import("./pages/Academies"))
 const TVDisplay = lazy(() => import("./pages/TVDisplay"))
 const SocialWall = lazy(() => import("./pages/SocialWall"))
 const PaymentCenter = lazy(() => import("./pages/PaymentCenter"))
@@ -192,6 +194,22 @@ const AppContent: React.FC = () => {
                     element={
                       <ReadOnlyRoute>
                         <Stadiums />
+                      </ReadOnlyRoute>
+                    }
+                  />
+                  <Route
+                    path="/reservations"
+                    element={
+                      <ReadOnlyRoute>
+                        <Reservations />
+                      </ReadOnlyRoute>
+                    }
+                  />
+                  <Route
+                    path="/academies"
+                    element={
+                      <ReadOnlyRoute>
+                        <Academies />
                       </ReadOnlyRoute>
                     }
                   />
